@@ -13,6 +13,9 @@ export const maxNameLength = 10;
 export const defaultHealth = 100;
 export const defaultLevel = 1;
 
+export const defaultAttackRaise = 1.2;
+export const defaultDefenceRaise = 1.2;
+
 export const defaultBowmanDefence = 25;
 export const defaultSwordsmanDefence = 10;
 export const defaultMagicianDefence = 40;

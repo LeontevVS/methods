@@ -20,7 +20,9 @@ import {
     defaultMagicianAttack,
     defaultDaemonAttack,
     defaultUndeadAttack,
-    defaultZombieAttack
+    defaultZombieAttack,
+    defaultAttackRaise,
+    defaultDefenceRaise
 } from '../consts'
 
 test('test creating characters', () => {
@@ -103,12 +105,14 @@ test('test validateName', () => {
     };
     expect(character).toEqual(expected_character);
     try {
-        new Character('a', CharacterTypes.BOWMAN)
+        new Character('a', CharacterTypes.BOWMAN);
+        throw new Error('test failed');
     } catch (e) {
         expect(e).toEqual(new Error('incorrect character name'));
     }
     try {
-        new Character('too many letters', CharacterTypes.BOWMAN)
+        new Character('too many letters', CharacterTypes.BOWMAN);
+        throw new Error('test failed');
     } catch (e) {
         expect(e).toEqual(new Error('incorrect character name'));
     }
@@ -127,7 +131,55 @@ test('test validateType', () => {
     expect(character).toEqual(expected_character);
     try {
         new Character('name', 'some type');
+        throw new Error('test failed')
     } catch (e) {
         expect(e).toEqual(new Error('incorrect character type'));
+    }
+});
+
+test('test levelUp', () => {
+    const bowman = new Bowman('bowman');
+    bowman.levelUp();
+    const expected_bowman = {
+        "name": "bowman",
+        "type": CharacterTypes.BOWMAN,
+        "health": defaultHealth,
+        "level": defaultLevel + 1,
+        "attack": defaultBowmanAttack * defaultAttackRaise,
+        "defence": defaultBowmanDefence * defaultDefenceRaise,
+    };
+    expect(bowman).toEqual(expected_bowman);
+
+    try {
+        const death_bowman = new Bowman('bowman');
+        death_bowman.health = 0;
+        death_bowman.levelUp();
+        throw new Error('test failed')
+    } catch (e) {
+        expect(e).toEqual(new Error('can not level up to death character'));
+    }
+});
+
+test('test damage', () => {
+    const bowman = new Bowman('bowman');
+    const damagePoints = 5;
+    bowman.damage(damagePoints);
+    const expected_bowman = {
+        "name": "bowman",
+        "type": CharacterTypes.BOWMAN,
+        "health": defaultHealth - damagePoints * (1 - defaultBowmanDefence / 100),
+        "level": defaultLevel,
+        "attack": defaultBowmanAttack,
+        "defence": defaultBowmanDefence,
+    };
+    expect(bowman).toEqual(expected_bowman);
+
+    try {
+        const death_bowman = new Bowman('bowman');
+        death_bowman.health = 0;
+        death_bowman.damage(5);
+        throw new Error('test failed')
+    } catch (e) {
+        expect(e).toEqual(new Error('can not damage death character'));
     }
 });
