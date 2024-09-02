@@ -131,7 +131,7 @@ test('test validateType', () => {
     expect(character).toEqual(expected_character);
     try {
         new Character('name', 'some type');
-        throw new Error('test failed')
+        throw new Error('test failed');
     } catch (e) {
         expect(e).toEqual(new Error('incorrect character type'));
     }
@@ -154,7 +154,7 @@ test('test levelUp', () => {
         const death_bowman = new Bowman('bowman');
         death_bowman.health = 0;
         death_bowman.levelUp();
-        throw new Error('test failed')
+        throw new Error('test failed');
     } catch (e) {
         expect(e).toEqual(new Error('can not level up to death character'));
     }
@@ -178,7 +178,7 @@ test('test damage', () => {
         const death_bowman = new Bowman('bowman');
         death_bowman.health = 0;
         death_bowman.damage(5);
-        throw new Error('test failed')
+        throw new Error('test failed');
     } catch (e) {
         expect(e).toEqual(new Error('can not damage death character'));
     }
